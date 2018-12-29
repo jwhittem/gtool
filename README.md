@@ -20,3 +20,4 @@ Flags:
 
 Use "gtool [command] --help" for more information about a command.
 ```
+
