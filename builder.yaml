@@ -1,0 +1,40 @@
+---
+description: "Builder project file"
+jobs:
+  - name: "test"
+    steps:
+      - name: "run tests"
+        commands:
+          - "go test -v ./..."
+  - name: "compile"
+    steps:
+      - name: "install binary to home directory"
+        commands:
+          - go build -o $HOME/bin/gtool
+  - name: "release"
+    steps:
+      - name: "build linux"
+        environment:
+          - GOOS=linux
+          - GOARCH=amd64
+        commands:
+          - go build -o bin/linux/gtool
+      - name: "build windows"
+        environment:
+          - GOOS=windows
+          - GOARCH=amd64 
+        commands:
+          - go build -o bin/windows/gtool.exe
+      - name: "build mac"
+        environment:
+          - GOOS=darwin
+          - GOARCH=amd64 
+        commands:
+          - go build -o bin/mac/gtool
+      - name: "sha256sums"
+        commands:
+          - shasum -a 256 bin/windows/gtool.exe > sha256sums.txt
+          - shasum -a 256 bin/linux/gtool >> sha256sums.txt
+          - shasum -a 256 bin/mac/gtool >> sha256sums.txt
+
+
